@@ -1,0 +1,29 @@
+GET http://localhost:5000/buecher
+
+
+POST http://localhost:5000/buch
+Content-Type: application/json
+   
+{
+    "Title": "Wildbluemen",
+    "Autor": "John Akeroyd",
+    "Genre": "Naturführer",
+    "Erscheinungsjahr": 2003,
+    "ISBN": "978-3-572-01409-3"
+  }
+
+####
+
+PUT http://localhost:5000/buch/3
+Content-Type: application/json
+
+{
+    "Title": "Wildbluemen Mitteleuropas",
+    "Autor": "John Akeroyd",
+    "Genre": "Naturführer",
+    "Erscheinungsjahr": 2003,
+    "ISBN": "978-3-572-01409-3"
+  }
+
+  ####
+  DELETE http://localhost:5000/buch/2
