@@ -1,0 +1,100 @@
+.button-addBook {
+    display: flex;
+    justify-content: flex-end; /* Schiebt den Button nach rechts */
+    margin-bottom: 10px; /* Abstand zur Tabelle */
+    width: 100%; /* Volle Breite */
+}
+
+.button-addBook button {
+    display: flex;
+    align-items: center; /* Icon & Text nebeneinander */
+    background-color: #007bff; /* Bootstrap-Blau */
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.button-addBook button i {
+    margin-right: 8px; /* Platz für das Icon */
+}
+
+.button-addBook button:hover {
+    background-color: #0056b3; /* Dunkleres Blau */
+    transform: scale(1.05); /* Kleines Vergrößern */
+}
+
+/* Responsive Anpassung für Mobile */
+@media (max-width: 768px) {
+    .button-addBook {
+        justify-content: center; /* Button zentrieren */
+    }
+}
+
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+  }
+
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin-top: 10px;
+    min-width: 600px;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: #5e5e5e;
+    color: white;
+    text-align: center;
+}
+
+tbody tr:nth-child(even){
+    background-color: #f2f2f2;
+}
+
+tbody tr:nth-child(odd) {
+    background-color: #ffffff; /* Weiße Reihen */
+  }
+
+  tbody tr:hover {
+    background-color: #d6e4f0; /* Leichte Hover-Farbe */
+  }
+
+ tbody tr button {
+    background-color: #ddd;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  button:hover {
+    background-color: #adadad;
+  }
+
+  @media(max-width:768px){    
+    .table-container {
+        overflow-x: auto;
+        display: block;
+      }
+    
+      table {
+        min-width: 100%;
+        font-size: 14px;
+      }
+      
+      th, td {
+        padding: 8px;
+      }
+  }
