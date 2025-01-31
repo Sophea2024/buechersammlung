@@ -1,0 +1,11 @@
+# Node.js -Abhängigkeiten
+node_modules/
+
+# Umgebungsvariablen
+.env
+
+# Docker-Dateien
+docker-data/
+
+# Datenbank
+mysql/
