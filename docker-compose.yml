@@ -1,3 +1,4 @@
+version: '3.7'
 services:
   mysql:
     image: mysql:8
@@ -31,7 +32,6 @@ services:
   frontend:
     build: ./buecher-frontend
     container_name: buecher-frontend
-    restart: always
     ports:
       - "3000:3000"
     depends_on:

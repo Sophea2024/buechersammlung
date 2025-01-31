@@ -24,4 +24,4 @@ ENV DB_PORT=3306
 EXPOSE 5000
 
 # Starte die Anwendung
-CMD ["npm", "start"]
+CMD ["npm", "server.js"]
