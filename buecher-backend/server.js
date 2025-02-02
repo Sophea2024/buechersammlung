@@ -9,7 +9,6 @@ const PORT = process.env.PORT ||5000;
 app.use(cors());
 app.use(express.json());
 
-//MySQL-Verbindung mit Server-Railway
 const db = mysql.createConnection({
   host: process.env.DB_HOST,  // Hier den MySQL-Service-Namen verwenden
   user: process.env.DB_USER,  // Benutzername
@@ -102,13 +101,3 @@ app.delete('/buch/:id', (req, res) => {
 app.listen(PORT, () =>{
     console.log(`Server läuft auf http://localhost:${PORT} und 'Strg + C' ende den Prozess`);
 });
-
-/*=======
-//MySQL-Verbindung
-const db = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: 'S20@24',
-    database: 'buechersammlung'
-});
-*/
