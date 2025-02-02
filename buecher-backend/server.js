@@ -10,11 +10,18 @@ app.use(cors());
 app.use(express.json());
 
 //MySQL-Verbindung
-const db = mysql.createConnection({
+/* const db = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     password: 'S20@24',
     database: 'buechersammlung'
+}); */
+const db = mysql.createConnection({
+    host: process.env.MYSQL_HOST,        // `monorail.proxy.rlwy.net` aus Railway
+    user: process.env.MYSQL_USER,        // `root` aus Railway
+    password: process.env.MYSQL_PASSWORD, // Dein Passwort aus Railway
+    port: process.env.MYSQL_PORT,        // `36789` aus Railway
+    database: process.env.MYSQL_DATABASE // `railway` aus Railway
 });
 
 db.connect(err => {
@@ -96,6 +103,7 @@ app.delete('/buch/:id', (req, res) => {
         }
     });
   });
+
 
 // Server starten
 app.listen(PORT, () =>{
