@@ -10,12 +10,6 @@ app.use(cors());
 app.use(express.json());
 
 //MySQL-Verbindung
-/* const db = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: 'S20@24',
-    database: 'buechersammlung'
-}); */
 const db = mysql.createConnection({
     host: process.env.MYSQL_HOST,        // `monorail.proxy.rlwy.net` aus Railway
     user: process.env.MYSQL_USER,        // `root` aus Railway
