@@ -18,7 +18,7 @@ ENV DB_HOST=mysql
 ENV DB_USER=user
 ENV DB_PASSWORD=password
 ENV DB_NAME=buechersammlung
-ENV DB_PORT=3306
+ENV DB_PORT=3307
 
 # Exponiere den Port, auf dem der Server läuft
 EXPOSE 5000
