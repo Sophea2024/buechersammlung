@@ -4,6 +4,8 @@ services:
     image: mysql:8
     container_name: buecher-mysql
     restart: always
+    env_file:
+      - .env
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: buechersammlung
@@ -18,8 +20,6 @@ services:
     build: ./buecher-backend
     container_name: buecher-backend
     restart: always
-    ports:
-      - "5000:5000"
     depends_on:
       - mysql
     environment:
