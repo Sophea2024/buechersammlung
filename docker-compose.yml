@@ -10,7 +10,7 @@ services:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: buechersammlung
       MYSQL_USER: user
-      MYSQL_PASSWORD: password
+      MYSQL_PASSWORD: "password"
     ports:
       - "3307:3306" # Ändere nicht auf 3307, da auf dem Server 3306 frei sein sollte
     volumes:
@@ -22,13 +22,15 @@ services:
     restart: always
     depends_on:
       - mysql
+    command: ["npm", "start"]
+    env_file:
+      - .env
     environment:
       DB_HOST: mysql
       DB_USER: user
       DB_PASSWORD: password
       DB_NAME: buechersammlung
       DB_PORT: 3306 # MySQL wird im Container auf 3306 laufen
-
   frontend:
     build: ./buecher-frontend
     container_name: buecher-frontend
