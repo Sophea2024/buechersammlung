@@ -11,7 +11,7 @@ const BookList = ({ refresh, onEdit, onShowForm }) => {
   useEffect(() => {
     const fetchBooks = async () => {
       try {
-        const response = await axios.get('https://mysql.railway.internal');
+        const response = await axios.get('https://buechersammlung-production.up.railway.app');
         setBooks(response.data); // Erwarte ein Array von Büchern
       } catch (error) {
         console.error('Fehler beim Laden der Bücher:', error);
