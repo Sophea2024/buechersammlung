@@ -1,5 +1,5 @@
 const express = require('express');
-const mysql = require('mysql');
+const mysql = require('mysql2');
 const cors = require('cors');
 
 const app = express();
@@ -9,24 +9,27 @@ const PORT = process.env.PORT ||5000;
 app.use(cors({
     origin: 'https://sophea2024.github.io',  // Erlaubt Anfragen von deinem Frontend
     methods: 'GET,POST,PUT,DELETE',
-    credentials: true
-  }));
+    allowedHeaders: 'Content-Type,Authorization'
+}));
 app.use(express.json());
 
-const db = mysql.createConnection({
-  host: process.env.DB_HOST,  // Hier den MySQL-Service-Namen verwenden
-  user: process.env.DB_USER,  // Benutzername
-  password: process.env.DB_PASSWORD,  // Passwort
-  database: process.env.DB_NAME,  // Datenbankname
-  port: process.env.DB_PORT  // Standardport 3306
+const db = mysql.createPool({
+  connectionLimit: 10,
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
+  port: process.env.DB_PORT
 });
 
-db.connect(err => {
-    if (err) {
-        console.error('MySQL-Verbindung fehlgeschlagen:', err);
-        return;
-    }
-    console.log('Mit MySQL verbindung');
+// Test-Verbindung
+db.getConnection((err, connection) => {
+  if (err) {
+    console.error('MySQL Verbindung fehlgeschlagen:', err);
+    return;
+  }
+  console.log('Mit MySQL verbunden!');
+  connection.release();
 });
 
 // Beispiel-Route

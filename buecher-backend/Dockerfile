@@ -18,10 +18,10 @@ ENV DB_HOST=mysql
 ENV DB_USER=user
 ENV DB_PASSWORD=password
 ENV DB_NAME=buechersammlung
-ENV DB_PORT=3307
+ENV DB_PORT=3306
 
 # Exponiere den Port, auf dem der Server läuft
 EXPOSE 5000
 
 # Starte die Anwendung
-CMD ["npm", "server.js"]
+CMD ["npm", "start"]

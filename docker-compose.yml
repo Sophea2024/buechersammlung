@@ -1,43 +1,63 @@
 version: '3.7'
+
 services:
   mysql:
     image: mysql:8
     container_name: buecher-mysql
     restart: always
-    env_file:
-      - .env
+
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: buechersammlung
       MYSQL_USER: user
-      MYSQL_PASSWORD: "password"
+      MYSQL_PASSWORD: password
+
     ports:
-      - "3306:3306" # Ändere nicht auf 3307, da auf dem Server 3306 frei sein sollte
+      - "3307:3306"
+
     volumes:
       - mysql_data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
 
   backend:
     build: ./buecher-backend
     container_name: buecher-backend
     restart: always
+
     depends_on:
-      - mysql
+      mysql:
+        condition: service_healthy
+
     command: ["npm", "start"]
-    env_file:
-      - .env
+
     environment:
       DB_HOST: mysql
       DB_USER: user
       DB_PASSWORD: password
       DB_NAME: buechersammlung
-      DB_PORT: 3306 # MySQL wird im Container auf 3306 laufen
+      DB_PORT: 3306
+
+    ports:
+      - "5000:5000"
+
+
   frontend:
     build: ./buecher-frontend
     container_name: buecher-frontend
+
     ports:
       - "3000:3000"
+
     depends_on:
       - backend
+
 
 volumes:
   mysql_data:
