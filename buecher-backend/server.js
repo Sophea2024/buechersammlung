@@ -7,7 +7,7 @@ const PORT = process.env.PORT ||5000;
 
 //Middleware
 app.use(cors({
-    origin: 'https://sophea2024.github.io',  // Erlaubt Anfragen von deinem Frontend
+    origin: 'http://localhost:3000',
     methods: 'GET,POST,PUT,DELETE',
     allowedHeaders: 'Content-Type,Authorization'
 }));
@@ -19,7 +19,7 @@ const db = mysql.createPool({
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
-  port: process.env.DB_PORT
+  port: Number(process.env.DB_PORT)
 });
 
 // Test-Verbindung
@@ -34,7 +34,9 @@ db.getConnection((err, connection) => {
 
 // Beispiel-Route
 app.get('/', (req, res) => {
-    res.send('Willkommen im Bücher-Backend!');
+    res.json({
+        message: 'Bücher API läuft 🚀'
+    });
 });
 
 //API-Rout: Bücher aus der Datenbank abrufen
@@ -52,42 +54,62 @@ app.get('/buecher', (req, res) =>{
 
 // Buch einzufügen
 app.post('/buch', (req, res) => {
-    const { Title, Autor, Genre, Erscheinungsjahr, ISBN, Hinzugefügt_am } = req.body;
-    const query = 'INSERT INTO buecher (Title, Autor, Genre, Erscheinungsjahr, ISBN, Hinzugefügt_am) VALUES (?, ?, ?, ?, ?, ?)';
-    db.query(query, [Title, Autor, Genre, Erscheinungsjahr, ISBN, Hinzugefügt_am], (err, results) => {
+    const { Title, Autor, Genre, Erscheinungsjahr, ISBN } = req.body;
+
+    const query = `
+        INSERT INTO buecher (Title, Autor, Genre, Erscheinungsjahr, ISBN)
+        VALUES (?, ?, ?, ?, ?)
+    `;
+
+    db.query(query, [Title, Autor, Genre, Erscheinungsjahr, ISBN], (err, results) => {
         if (err) {
-            console.error('Fehler beim Hinzufügen eines Buches:', err);
-            res.status(500).send('Buch konnte nicht hinzugefügt werden');
+            console.error(err);
+            res.status(500).send('Fehler beim Hinzufügen');
             return;
         }
-        res.status(201).send('Buch erfolgreich hinzugefügt');
+        res.status(201).send('Buch hinzugefügt');
     });
 });
 
 //Buch aktualisieren
-app.put('/buch/:id', (req, res) =>{
-    const {id} = req.params;
-    const {Title, Autor, Genre, Erscheinungsjahr, ISBN} = req.body;
-    const query = 'UPDATE buecher SET Title = ?, Autor = ?, Genre = ?, Erscheinungsjahr = ?, ISBN = ? WHERE id = ?';
-    db.query(query, [Title, Autor, Genre, Erscheinungsjahr, ISBN, id], (err, results) => {
-        if (err) {
-            console.error('Fehler beim Aktualisieren des Buches:', err);
-            res.status(500).send('Buch konnte nicht aktualisiert werden');
-            return;
-        }
+app.put('/buch/:id', (req, res) => {
+    const { id } = req.params;
+    const { Title, Autor, Genre, Erscheinungsjahr, ISBN } = req.body;
 
-        if (results.affectedRows === 0) {
-            res.status(404).send('Kein Buch mit dieser ID gefunden');
-        } else {
-            res.status(200).send('Buch erfolgreich aktualisiert');
+    console.log("UPDATE ID:", id);
+    console.log("BODY:", req.body);
+
+    const query = `
+        UPDATE buecher 
+        SET Title = ?, Autor = ?, Genre = ?, Erscheinungsjahr = ?, ISBN = ? 
+        WHERE id = ?
+    `;
+
+    db.query(
+        query,
+        [Title, Autor, Genre, Erscheinungsjahr, ISBN, id],
+        (err, results) => {
+            if (err) {
+                console.error('Fehler beim Aktualisieren des Buches:', err);
+                res.status(500).send('Buch konnte nicht aktualisiert werden');
+                return;
+            }
+
+            if (results.affectedRows === 0) {
+                res.status(404).send('Kein Buch mit dieser ID gefunden');
+            } else {
+                res.status(200).send('Buch erfolgreich aktualisiert');
+            }
         }
-    });
+    );
 });
 
 // Buch löschen
 app.delete('/buch/:id', (req, res) => {
     const { id } = req.params;
+
     const query = 'DELETE FROM buecher WHERE id = ?';
+    
     db.query(query, [id], (err, results) => {
       if (err) {
         console.error('Fehler beim Löschen des Buches:', err);
@@ -98,8 +120,8 @@ app.delete('/buch/:id', (req, res) => {
         console.log('Kein Buch mit dieser ID gefunden:', id);
         res.status(404).send('Kein Buch mit dieser ID gefunden');
         } else {
-            console.log('Buch erfolgreich gelöscht:', id);
-            res.send('Buch erfolgreich gelöscht');
+            console.log('Buch ist gelöscht:', id);
+            res.send('Buch ist gelöscht');
         }
     });
   });

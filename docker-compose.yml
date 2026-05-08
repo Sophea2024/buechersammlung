@@ -17,7 +17,7 @@ services:
 
     volumes:
       - mysql_data:/var/lib/mysql
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro
 
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
@@ -35,8 +35,6 @@ services:
       mysql:
         condition: service_healthy
 
-    command: ["npm", "start"]
-
     environment:
       DB_HOST: mysql
       DB_USER: user
@@ -51,13 +49,11 @@ services:
   frontend:
     build: ./buecher-frontend
     container_name: buecher-frontend
+    restart: always
 
-    ports:
-      - "3000:3000"
-
+    
     depends_on:
       - backend
-
 
 volumes:
   mysql_data:

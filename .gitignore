@@ -8,4 +8,8 @@ node_modules/
 docker-data/
 
 # Datenbank
-mysql/
+mysql_data
+
+.DS_Store
+dist
+build

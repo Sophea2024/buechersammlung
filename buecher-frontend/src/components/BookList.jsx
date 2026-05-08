@@ -5,13 +5,13 @@ import Button from 'react-bootstrap/Button';
 import './css/BookList.css';
 import { FaPlus } from 'react-icons/fa'; // Importiere ein Icon
 
-const BookList = ({ refresh, onEdit, onShowForm }) => {
+const BookList = ({ refresh, onEdit,onDelete, onShowForm }) => {
   const [books, setBooks] = useState([]);
 
   useEffect(() => {
     const fetchBooks = async () => {
       try {
-        const response = await axios.get('https://buechersammlung-production.up.railway.app');
+        const response = await axios.get('http://localhost:5000/buecher');
         setBooks(response.data); // Erwarte ein Array von Büchern
       } catch (error) {
         console.error('Fehler beim Laden der Bücher:', error);
@@ -46,8 +46,8 @@ const BookList = ({ refresh, onEdit, onShowForm }) => {
         </thead>
         <tbody>
           {books.map((book) => (
-            <tr key={book.ID}>
-              <td>{book.ID}</td>
+            <tr key={book.id}>
+              <td>{book.id}</td>
               <td>{book.Title}</td>
               <td>{book.Autor}</td>
               <td>{book.Genre}</td>
@@ -55,6 +55,15 @@ const BookList = ({ refresh, onEdit, onShowForm }) => {
               <td>{book.ISBN}</td>
               <td>
                 <button onClick={() => onEdit(book)}>Bearbeiten</button>
+                <button className="delete-btn"
+                  onClick={() => {
+                    if (window.confirm("Wirklich löschen?")) {
+                      onDelete(book.id);
+                    }
+                  }}
+                >
+                  Delete
+                </button>
               </td>
             </tr>
           ))}

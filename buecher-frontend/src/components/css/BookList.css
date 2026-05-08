@@ -72,7 +72,7 @@ tbody tr:nth-child(odd) {
   }
 
  tbody tr button {
-    background-color: #ddd;
+    background-color: #bab9b9;
     border: none;
     padding: 5px 10px;
     border-radius: 5px;
@@ -80,7 +80,7 @@ tbody tr:nth-child(odd) {
   }
 
   button:hover {
-    background-color: #adadad;
+    background-color: #929191;
   }
 
   @media(max-width:768px){    
@@ -98,3 +98,17 @@ tbody tr:nth-child(odd) {
         padding: 8px;
       }
   }
+
+  .delete-btn {
+  background-color: rgb(214, 3, 3);
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-left: 5px;
+}
+
+.delete-btn:hover {
+  background-color: darkred;
+}

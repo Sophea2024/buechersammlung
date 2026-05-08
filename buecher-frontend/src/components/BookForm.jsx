@@ -1,22 +1,36 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './css/BookForm.css';
 
 const BookForm = ({ onBookAdded, bookToEdit, onCancel }) => {
+
   const [formData, setFormData] = useState({
-    Title: bookToEdit?.Title || '',
-    Autor: bookToEdit?.Autor || '',
-    Genre: bookToEdit?.Genre || '',
-    Erscheinungsjahr: bookToEdit?.Erscheinungsjahr || '',
-    ISBN: bookToEdit?.ISBN || '',
+    Title: '',
+    Autor: '',
+    Genre: '',
+    Erscheinungsjahr: '',
+    ISBN: '',
   });
 
+  // FIX: Daten setzen wenn bookToEdit kommt
+  useEffect(() => {
+    if (bookToEdit) {
+      setFormData({
+        Title: bookToEdit.Title || '',
+        Autor: bookToEdit.Autor || '',
+        Genre: bookToEdit.Genre || '',
+        Erscheinungsjahr: bookToEdit.Erscheinungsjahr || '',
+        ISBN: bookToEdit.ISBN || '',
+      });
+    }
+  }, [bookToEdit]);
+
   const fields = [
-    {name: 'Title', label: 'Title', type: 'text'},
-    {name: 'Autor', label: 'Autor', type: 'text'},
-    {name: 'Genre', label: 'Genre', type: 'text'},
-    {name: 'Erscheinungsjahr', label: 'Erscheinungsjahr', type: 'number'},
-    {name: 'ISBN', label: 'ISBN', type: 'text'}
+    { name: 'Title', label: 'Title', type: 'text' },
+    { name: 'Autor', label: 'Autor', type: 'text' },
+    { name: 'Genre', label: 'Genre', type: 'text' },
+    { name: 'Erscheinungsjahr', label: 'Erscheinungsjahr', type: 'number' },
+    { name: 'ISBN', label: 'ISBN', type: 'text' }
   ];
 
   const handleChange = (e) => {
@@ -25,27 +39,29 @@ const BookForm = ({ onBookAdded, bookToEdit, onCancel }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     try {
       if (bookToEdit) {
-        // Update Buch
-        await axios.put(`http://localhost:5000/buch/${bookToEdit.ID}`, formData);
+        // UPDATE FIX
+        await axios.put(
+          `http://localhost:5000/buch/${bookToEdit.id}`,
+          formData
+        );
         alert('Buch erfolgreich aktualisiert!');
       } else {
-        // Neues Buch hinzufügen
+        // CREATE
         await axios.post('http://localhost:5000/buch', formData);
         alert('Buch erfolgreich hinzugefügt!');
       }
-      onBookAdded(); // Informiere über Änderungen
+
+      onBookAdded();
+
     } catch (error) {
-      if (error.response) {
-        alert(`Fehler: ${error.response.data}`);
-      } else {
-        alert('Netzwerkfehler');
-      }
+      console.error(error);
+      alert(error.response?.data || 'Fehler beim Speichern');
     }
   };
 
-  //Eingaben löschen
   const handleClear = () => {
     setFormData({
       Title: '',
@@ -59,27 +75,36 @@ const BookForm = ({ onBookAdded, bookToEdit, onCancel }) => {
   return (
     <form onSubmit={handleSubmit} className='form-container'>
       <h2>{bookToEdit ? 'Buch aktualisieren' : 'Buch hinzufügen'}</h2>
-      {fields.map((fields) => (
-        <div key={fields.name}>
-          <label htmlFor={fields.name}>{fields.label}</label>
+
+      {fields.map((field) => (
+        <div key={field.name}>
+          <label htmlFor={field.name}>{field.label}</label>
           <input
-            type={fields.type}
-            name={fields.name}
-            value={formData[fields.name]}
+            type={field.type}
+            name={field.name}
+            value={formData[field.name]}
             onChange={handleChange}
-            placeholder={`Bitte ${fields.label.toLowerCase()} eingeben`}
+            placeholder={`Bitte ${field.label.toLowerCase()} eingeben`}
             required
           />
         </div>
       ))}
-      <div className='button-group'>        
-        <button type='submit'>{bookToEdit ? 'Aktualisieren' : 'Hinzufügen'}</button> 
-        <button type='button' onClick={handleClear} className='cancel-btn'>Abbrechen</button>
-        <button type="button" onClick={onCancel} className="back-btn">Zurück</button>
+
+      <div className='button-group'>
+        <button type='submit'>
+          {bookToEdit ? 'Aktualisieren' : 'Hinzufügen'}
+        </button>
+
+        <button type='button' onClick={handleClear} className='cancel-btn'>
+          Leeren
+        </button>
+
+        <button type='button' onClick={onCancel} className='back-btn'>
+          Zurück
+        </button>
       </div>
     </form>
   );
-
 };
 
 export default BookForm;
