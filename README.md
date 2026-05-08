@@ -60,13 +60,13 @@ npm run start
 ## Und füge ein:
 
 ### Bücherliste
-![Bücherliste](./screenshots/booklist.png)
+![Open Image](./Screenshots/booklist.png)
 
 ### Buch hinzufügen
 ![Add Book ](./Screenshots/addbook.png)
 
 ### Bearbeiten
-![Edit Book](./screenshots/editbook.png)
+![Edit Book](./Screenshots/editbook.png)
 
 ## Live Demo
 
